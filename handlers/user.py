@@ -23,21 +23,21 @@ def recieve_data_from_excel_file(message: Message):
         f.write(file)
 
     data = get_data_from_excel_file("data.xlsx")
-
+    print(len(data))
     for item in data:
         barcode = item.get("Баркод")
         age = item.get("Возраст")
         size = item.get("Габариты")
         publisher = item.get("Издательство")
         category = item.get("Категория")
-        pages = item.get("Кол-во страниц", "")
+        pages = item.get("Кол-во страниц", "0")
+        print(type(pages), pages)
         title = item.get("Название")
         description = item.get("Описание")
         binding = item.get("Переплёт")
         subcategory = item.get("Под категория")
         image_url = item.get("Ссылка на фото")
-        host = "//".join(list(filter(lambda x: x, image_url.split("/")[:3])))
-        print(pages)
+
         r = requests.post(
             f"{API_URL}/products/",
             json={
@@ -47,7 +47,8 @@ def recieve_data_from_excel_file(message: Message):
                 "publisher": publisher,
                 "main_category": category,
                 "price": "",
-                # "pages": pages,
+                "preview": image_url,
+                "pages": str(pages),
                 "title": title,
                 "subcategory": subcategory,
                 "description": description,
@@ -55,3 +56,4 @@ def recieve_data_from_excel_file(message: Message):
             },
         )
         print(r.json())
+    bot.send_message(message.from_user.id, "Записи были обновлены")
