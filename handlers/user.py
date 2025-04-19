@@ -55,5 +55,9 @@ def recieve_data_from_excel_file(message: Message):
                 "binding": binding,
             },
         )
-        print(r.json())
+
+        result = r.json()
+        msg = f'Запись с штрихкодом: {barcode} была {"Создана" if result.get('is_created') else "Обновлена"}'
+        bot.send_message(message.from_user.id, msg)
+
     bot.send_message(message.from_user.id, "Записи были обновлены")
