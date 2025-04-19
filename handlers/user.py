@@ -23,7 +23,7 @@ def recieve_data_from_excel_file(message: Message):
         f.write(file)
 
     data = get_data_from_excel_file("data.xlsx")
-    print(len(data))
+
     for item in data:
         barcode = item.get("Баркод")
         age = item.get("Возраст")
@@ -31,12 +31,12 @@ def recieve_data_from_excel_file(message: Message):
         publisher = item.get("Издательство")
         category = item.get("Категория")
         pages = item.get("Кол-во страниц", "0")
-        print(type(pages), pages)
         title = item.get("Название")
         description = item.get("Описание")
         binding = item.get("Переплёт")
         subcategory = item.get("Под категория")
         image_url = item.get("Ссылка на фото")
+        price = item.get("Цена", "")
 
         r = requests.post(
             f"{API_URL}/products/",
@@ -46,7 +46,7 @@ def recieve_data_from_excel_file(message: Message):
                 "size": size,
                 "publisher": publisher,
                 "main_category": category,
-                "price": "",
+                "price": price,
                 "preview": image_url,
                 "pages": str(pages),
                 "title": title,
