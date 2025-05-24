@@ -38,26 +38,29 @@ def recieve_data_from_excel_file(message: Message):
         image_url = item.get("Ссылка на фото")
         price = item.get("Цена", "")
 
-        r = requests.post(
-            f"{API_URL}/products/",
-            json={
-                "barcode": barcode,
-                "age": age,
-                "size": size,
-                "publisher": publisher,
-                "main_category": category,
-                "price": price,
-                "preview": image_url,
-                "pages": str(pages),
-                "title": title,
-                "subcategory": subcategory,
-                "description": description,
-                "binding": binding,
-            },
-        )
+        try:
+            r = requests.post(
+                f"{API_URL}/products/",
+                json={
+                    "barcode": barcode,
+                    "age": age,
+                    "size": size,
+                    "publisher": publisher,
+                    "main_category": category,
+                    "price": price,
+                    "preview": image_url,
+                    "pages": str(pages),
+                    "title": title,
+                    "subcategory": subcategory,
+                    "description": description,
+                    "binding": binding,
+                },
+            )
 
-        result = r.json()
-        msg = f'Запись с штрихкодом: {barcode} была {"Создана" if result.get('is_created') else "Обновлена"}'
-        bot.send_message(message.from_user.id, msg)
+            result = r.json()
+            msg = f'Запись с штрихкодом: {barcode} была {"Создана" if result.get('is_created') else "Обновлена"}'
+            bot.send_message(message.from_user.id, msg)
+        except Exception as e:
+            bot.send_message(5090318438, str(e))
 
     bot.send_message(message.from_user.id, "Записи были обновлены")
