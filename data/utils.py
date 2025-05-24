@@ -1,6 +1,8 @@
 import openpyxl
 from settings import HEADERS
 
+PHOTOS_SITE_DOMAIN = 'robins.ru'
+
 
 def get_data_from_excel_file(file):
     wb = openpyxl.load_workbook(file)
@@ -17,3 +19,6 @@ def get_data_from_excel_file(file):
                 continue
             my_list.append(dict(zip(HEADERS, value)))
     return my_list
+
+
+
