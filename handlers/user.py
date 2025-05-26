@@ -26,46 +26,44 @@ def receive_data_from_excel_file(message: Message):
         f.write(file)
 
     data = get_data_from_excel_file("data.xlsx")
-
+    print(len(data))
+    count = 1
     for item in data:
         barcode = item.get("Баркод")
 
-        age = item.get("Возраст", "")
-        size = item.get("Габариты см", "")
-        publisher = item.get("Издательство", "")
-        category = item.get("Категория", "")
-        pages = item.get("Кол-во страниц", "0")
-        title = item.get("Название", "")
-        description = item.get("Описание", "")
-        binding = item.get("Переплёт", "")
-        subcategory = item.get("Под категория", "")
-        image_url = item.get("Ссылка на фото", "")
-        price = item.get("Цена", "")
-
         if not barcode:
-            sys.stderr.write('no barcode\n')
+            print('no barcode, continue')
             continue
 
-
+        age = item.get("Возраст")
+        size = item.get("Габариты см")
+        publisher = item.get("Издательство")
+        category = item.get("Категория")
+        pages = item.get("Кол-во страниц")
+        title = item.get("Название")
+        description = item.get("Описание")
+        binding = item.get("Переплёт")
+        subcategory = item.get("Под категория")
+        image_url = item.get("Ссылка на фото")
+        price = item.get("Цена")
 
         json_data = {
             "barcode": barcode,
-            "age": age if age is not None else "",
+            "age": age,
             "size": size if size is not None else "",
-            "publisher": publisher if publisher is not None else "",
-            "main_category": category if category is not None else "",
-            "price": price if price is not None else "",
-            "preview": image_url if image_url is not None else "",
-            "pages": str(pages) if pages is not None else "0",
-            "title": title if title is not None else "",
-            "subcategory": subcategory if subcategory is not None else "",
-            "description": description if description is not None else "",
-            "binding": binding if binding is not None else "",
+            "publisher": publisher,
+            "main_category": category,
+            "price": price,
+            "preview": image_url,
+            "pages": str(pages),
+            "title": title,
+            "subcategory": subcategory,
+            "description": description,
+            "binding": binding,
         }
 
         print(f'{barcode=}=={size=}')
 
-    #
         try:
             r = requests.post(
                 f"{API_URL}/products/",
@@ -73,10 +71,11 @@ def receive_data_from_excel_file(message: Message):
             )
             result = r.json()
 
-            msg = f'Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
+            msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
             bot.send_message(message.from_user.id, msg)
+            count += 1
         except Exception as e:
-            bot.send_message(5090318438, f'{barcode} {str(e)}: {e.__class__.__name__}')
-
+            # bot.send_message(5090318438, f'{barcode} {str(e)}: {e.__class__.__name__}')
+            print(e, e.__class__)
 
     bot.send_message(message.from_user.id, "Записи были обновлены")

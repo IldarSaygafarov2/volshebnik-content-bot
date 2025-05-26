@@ -16,12 +16,10 @@ def get_data_from_excel_file(file):
         )
     ):
         is_all_none = all(list(map(lambda x: x is None, value[1:])))
-
         if not is_all_none:
             if idx == 0:
                 continue
             my_list.append(dict(zip(HEADERS, value)))
-
 
     return my_list
 
