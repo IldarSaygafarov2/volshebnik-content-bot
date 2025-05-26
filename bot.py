@@ -7,4 +7,4 @@ if __name__ == "__main__":
         print("bot started")
         bot.polling(none_stop=True)
     except Exception as e:
-        pass
+        print(e)
