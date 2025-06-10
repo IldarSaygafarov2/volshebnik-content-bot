@@ -1,5 +1,5 @@
 import json
-import sys
+import time
 
 import requests
 from telebot.types import Message
@@ -69,6 +69,7 @@ def receive_data_from_excel_file(message: Message):
                 f"{API_URL}/products/",
                 data=json.dumps(json_data),
             )
+            time.sleep(3)
             result = r.json()
 
             msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
