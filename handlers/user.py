@@ -40,6 +40,8 @@ def receive_data_from_excel_file(message: Message):
         publisher = item.get("Издательство")
         category = item.get("Категория")
         pages = item.get("Кол-во страниц")
+        weight = item.get('Вес гр')
+        print(weight)
         title = item.get("Название")
         description = item.get("Описание")
         binding = item.get("Переплёт")
@@ -47,15 +49,17 @@ def receive_data_from_excel_file(message: Message):
         image_url = item.get("Ссылка на фото")
         price = item.get("Цена")
 
+
         json_data = {
             "barcode": barcode,
             "age": age,
             "size": size if size is not None else "",
             "publisher": publisher,
             "main_category": category,
-            "price": price,
+            "price": str(price),
             "preview": image_url,
             "pages": str(pages),
+            "weight": str(weight),
             "title": title,
             "subcategory": subcategory,
             "description": description,
@@ -71,6 +75,7 @@ def receive_data_from_excel_file(message: Message):
             )
             time.sleep(3)
             result = r.json()
+            print(result)
 
             msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
             bot.send_message(message.from_user.id, msg)

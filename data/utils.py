@@ -19,6 +19,9 @@ def get_data_from_excel_file(file):
         if not is_all_none:
             if idx == 0:
                 continue
+            if idx == 2:
+                break
+            print(dict(zip(HEADERS, value)))
             my_list.append(dict(zip(HEADERS, value)))
 
     return my_list
