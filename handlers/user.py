@@ -68,20 +68,34 @@ def receive_data_from_excel_file(message: Message):
 
         print(f'{barcode=}=={size=}')
 
-        try:
-            r = requests.post(
-                f"{API_URL}/products/",
-                data=json.dumps(json_data),
-            )
-            time.sleep(3)
-            result = r.json()
-            bot.send_message(5090318438, f'{json.dumps(result, indent=4, ensure_ascii=False)}')
+        r = requests.post(
+            f"{API_URL}/products/",
+            data=json.dumps(json_data),
+        )
+        r.raise_for_status()
+        time.sleep(3)
+        result = r.json()
+        bot.send_message(5090318438, f'{json.dumps(result, indent=4, ensure_ascii=False)}')
 
-            msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
-            bot.send_message(message.from_user.id, msg)
-            count += 1
-        except Exception as e:
-            # bot.send_message(5090318438, f'{barcode} {str(e)}: {e.__class__.__name__}')
-            print(e, e.__class__)
+        msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
+        bot.send_message(message.from_user.id, msg)
+        count += 1
+
+        # try:
+        #
+        #     r = requests.post(
+        #         f"{API_URL}/products/",
+        #         data=json.dumps(json_data),
+        #     )
+        #     time.sleep(3)
+        #     result = r.json()
+        #     bot.send_message(5090318438, f'{json.dumps(result, indent=4, ensure_ascii=False)}')
+        #     msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
+        #     bot.send_message(message.from_user.id, msg)
+        #     count += 1
+        # except Exception as e:
+        #     bot.send_message(5090318438, f'{barcode} {str(e)}: {e.__class__.__name__}')
+        #     print(e, e.__class__)
+
 
     bot.send_message(message.from_user.id, "Записи были обновлены")
