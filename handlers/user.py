@@ -73,6 +73,7 @@ def receive_data_from_excel_file(message: Message):
             f"{API_URL}/products/",
             data=json.dumps(json_data),
         )
+        bot.send_message(5090318438, f'{r}')
 
         time.sleep(3)
         result = r.json()
