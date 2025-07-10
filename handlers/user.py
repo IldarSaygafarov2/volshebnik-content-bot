@@ -75,7 +75,7 @@ def receive_data_from_excel_file(message: Message):
             )
             time.sleep(3)
             result = r.json()
-            bot.send_message(5090318438, f'{json.dumps(json_data, indent=4, ensure_ascii=False)}')
+            bot.send_message(5090318438, f'{json.dumps(result, indent=4, ensure_ascii=False)}')
 
             msg = f'{count} Запись с штрихкодом: {barcode} была {"Создана" if result.get("is_created") else "Обновлена"}'
             bot.send_message(message.from_user.id, msg)
