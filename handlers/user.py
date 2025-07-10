@@ -67,7 +67,7 @@ def receive_data_from_excel_file(message: Message):
             "binding": binding,
         }
 
-        bot.send_message(5090318438, f'{json.dumps(json_data, indent=4, ensure_ascii=False)}')
+        # bot.send_message(5090318438, f'{json.dumps(json_data, indent=4, ensure_ascii=False)}')
         print(f'{barcode=}=={size=}')
 
         # r = requests.post(
