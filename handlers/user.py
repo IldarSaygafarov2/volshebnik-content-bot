@@ -40,7 +40,7 @@ def receive_data_from_excel_file(message: Message):
         publisher = item.get("Издательство")
         category = item.get("Категория")
         pages = item.get("Кол-во страниц")
-        weight = item.get('Вес гр')
+        weight = item.get('Вес гр', '')
         print(weight)
         title = item.get("Название")
         description = item.get("Описание")
@@ -81,7 +81,7 @@ def receive_data_from_excel_file(message: Message):
             bot.send_message(message.from_user.id, msg)
             count += 1
         except Exception as e:
-            bot.send_message(5090318438, f'{barcode} {str(e)}: {e.__class__.__name__}')
+            # bot.send_message(5090318438, f'{barcode} {str(e)}: {e.__class__.__name__}')
             print(e, e.__class__)
 
     bot.send_message(message.from_user.id, "Записи были обновлены")
