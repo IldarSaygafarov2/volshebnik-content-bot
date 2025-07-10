@@ -26,13 +26,15 @@ def receive_data_from_excel_file(message: Message):
         f.write(file)
 
     data = get_data_from_excel_file("data.xlsx")
-    print(len(data))
+
+    bot.send_message(5090318438, f'Всего книг: {len(data)}')
     count = 1
     for item in data:
         barcode = item.get("Баркод")
 
         if not barcode:
             print('no barcode, continue')
+            bot.send_message(5090318438, f'no barcode, continue')
             continue
 
         age = item.get("Возраст")
@@ -41,7 +43,6 @@ def receive_data_from_excel_file(message: Message):
         category = item.get("Категория")
         pages = item.get("Кол-во страниц")
         weight = item.get('Вес гр', '')
-        print(weight)
         title = item.get("Название")
         description = item.get("Описание")
         binding = item.get("Переплёт")
